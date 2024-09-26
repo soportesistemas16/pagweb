@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOCIETY: Cuidado para la Piel</title>
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #F6F6F6;
+            line-height: 1.6;
+            overflow-x: hidden; /* Evitar scroll horizontal */
+        }
+
+        header {
+            background-color: #A54FB7; /* Color más claro */
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil debajo del header */
+        }
+
+        header img {
+            max-width: 300px; /* Ajusta el tamaño del logo */
+            margin-bottom: 10px;
+            animation: logoBounce 2s infinite; /* Añade la animación al logo */
+        }
+
+        @keyframes logoBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px); /* Desplazamiento hacia arriba */
+            }
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave para destacar el contenedor */
+            border-radius: 10px; /* Bordes redondeados */
+        }
+
+        .intro {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .intro h2 {
+            font-size: 2rem; /* Tamaño más grande para el título */
+        }
+
+        .gallery {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px; /* Añadir espacio entre los productos */
+        }
+
+        .product {
+            width: 30%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transiciones suaves para el producto */
+            cursor: pointer; /* Cambiar el cursor para indicar que es clickeable */
+            border-radius: 8px; /* Bordes redondeados */
+            overflow: hidden; /* Esconder el contenido desbordado */
+            position: relative; /* Necesario para el pseudo-elemento */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para los productos */
+        }
+
+        .product:hover {
+            transform: scale(1.05) rotate(2deg); /* Aumenta ligeramente el tamaño y rota en hover */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Aumentar la sombra en hover */
+        }
+
+        .product img {
+            width: 100%;
+            border-radius: 8px 8px 0 0; /* Bordes redondeados solo arriba */
+            transition: transform 0.5s ease; /* Transiciones para la imagen */
+        }
+
+        .product:hover img {
+            transform: scale(1.1); /* Aumenta la imagen en hover */
+        }
+
+        .info {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .info h3 {
+            margin: 0;
+            font-size: 1.5rem; /* Tamaño del nombre del producto */
+        }
+
+        .info p {
+            margin: 5px 0;
+            font-size: 1rem; /* Tamaño de la descripción */
+            color: #555; /* Color gris para la descripción */
+        }
+
+        .info .price {
+            font-weight: bold;
+            font-size: 1.2rem; /* Tamaño del precio */
+            color: #A54FB7; /* Color del precio */
+        }
+
+        /* Sección de detalles del producto */
+        .product-details {
+            display: none; /* Oculto por defecto */
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px; /* Bordes redondeados */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+            margin: 20px 0; /* Margen para separar */
+            animation: fadeIn 0.3s; /* Animación de entrada */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .product-details h3 {
+            font-size: 2rem; /* Tamaño del título */
+            color: #A54FB7; /* Color del título */
+        }
+
+        .product-details p {
+            font-size: 1.1rem; /* Tamaño del texto */
+            margin-bottom: 10px; /* Espacio inferior */
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #A54FB7; /* Color del botón */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            margin-top: 10px;
+            transition: background-color 0.3s ease; /* Transición suave */
+        }
+
+        .back-button:hover {
+            background-color: #933F9D; /* Color más oscuro en hover */
+        }
+
+        /* Estilo del modal */
+        .modal {
+            display: none; /* Oculto por defecto */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro semi-transparente */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px; /* Bordes redondeados */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+            width: 300px; /* Ancho del modal */
+            margin: auto; /* Centrar el modal */
+        }
+
+        .modal-content h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #A54FB7; /* Color del título del modal */
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px; /* Bordes redondeados para los campos */
+            box-sizing: border-box; /* Incluir padding y border en el tamaño total */
+        }
+
+        .submit-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #A54FB7; /* Color del botón */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease; /* Transición suave */
+        }
+
+        .submit-button:hover {
+            background-color: #933F9D; /* Color más oscuro en hover */
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            margin-top: 20px;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil en el pie de página */
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="https://i.imgur.com/A7cbja5.png" alt="Logo de Society">
+    <h1>Productos para el Cuidado de la Piel</h1>
+</header>
+
+<div class="container">
+    <div class="intro">
+        <h2>Bienvenido a nuestra Línea de Cuidado de la Piel</h2>
+        <p>Descubre nuestros productos premium diseñados para revitalizar tu piel.</p>
+    </div>
+
+    <div class="gallery">
+        <div class="product" onclick="showDetails('moisturizer')">
+            <img src="https://i.imgur.com/kAHGxnt.jpeg" alt="Crema Hidratante">
+            <div class="info">
+                <h3>Crema Hidratante</h3>
+                <p>Hidrata y nutre tu piel en profundidad.</p>
+                <p class="price">$120,000 COP</p>
+            </div>
+        </div>
+        
+        <div class="product" onclick="showDetails('serum')">
+            <img src="https://i.imgur.com/E1tZZ8g.jpeg" alt="Sérum de Vitamina C">
+            <div class="info">
+                <h3>Sérum de Vitamina C</h3>
+                <p>Ilumina y rejuvenece tu piel.</p>
+                <p class="price">$140,000 COP</p>
+            </div>
+        </div>
+
+        <div class="product" onclick="showDetails('mask')">
+            <img src="https://i.imgur.com/UORTIjW.jpeg" alt="Mascarilla de Noche">
+            <div class="info">
+                <h3>Mascarilla de Noche</h3>
+                <p>Repara y revitaliza tu piel mientras duermes.</p>
+                <p class="price">$110,000 COP</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de detalles del producto -->
+    <div id="productDetails" class="product-details">
+        <button class="back-button" onclick="backToGallery()">Volver a la Galería</button>
+        <h3 id="productTitle"></h3>
+        <p id="productDescription"></p>
+        <p class="price" id="productPrice"></p>
+    </div>
+
+    <!-- Botón para abrir el formulario de registro -->
+    <button class="submit-button" onclick="openModal()">Registrarse</button>
+
+    <!-- Modal para el formulario de registro -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h2>Registro de Cliente</h2>
+            <div class="form-group">
+                <label for="clientName">Nombre:</label>
+                <input type="text" id="clientName" placeholder="Ingresa tu nombre" required>
+            </div>
+            <div class="form-group">
+                <label for="clientEmail">Correo Electrónico:</label>
+                <input type="email" id="clientEmail" placeholder="Ingresa tu correo" required>
+            </div>
+            <div class="form-group">
+                <label for="clientPhone">Número de Teléfono:</label>
+                <input type="tel" id="clientPhone" placeholder="Ingresa tu número de teléfono" required>
+            </div>
+            <button class="submit-button" onclick="registerClient()">Registrar</button>
+            <button class="back-button" onclick="closeModal()">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2024 Society, cuida tu piel. Todos los derechos reservados.</p>
+</footer>
+
+<script>
+    function showDetails(product) {
+        const details = {
+            moisturizer: {
+                title: 'Crema Hidratante',
+                description: 'Nuestra Crema Hidratante es perfecta para mantener tu piel suave y nutrida. Con ingredientes naturales que ayudan a retener la humedad, tu piel lucirá radiante y fresca.',
+                price: '$120,000 COP'
+            },
+            serum: {
+                title: 'Sérum de Vitamina C',
+                description: 'El Sérum de Vitamina C es un potente antioxidante que ayuda a iluminar tu piel y reducir las manchas. Ideal para unificar el tono y aportar luminosidad.',
+                price: '$140,000 COP'
+            },
+            mask: {
+                title: 'Mascarilla de Noche',
+                description: 'Nuestra Mascarilla de Noche es el tratamiento perfecto para reparar tu piel mientras duermes. Con ingredientes hidratantes, despierta con una piel revitalizada.',
+                price: '$110,000 COP'
+            }
+        };
+
+        const selectedProduct = details[product];
+        document.getElementById('productTitle').innerText = selectedProduct.title;
+        document.getElementById('productDescription').innerText = selectedProduct.description;
+        document.getElementById('productPrice').innerText = selectedProduct.price;
+
+        document.getElementById('productDetails').style.display = 'block';
+        document.querySelector('.gallery').style.display = 'none'; // Oculta la galería
+    }
+
+    function backToGallery() {
+        document.getElementById('productDetails').style.display = 'none';
+        document.querySelector('.gallery').style.display = 'flex'; // Muestra la galería nuevamente
+    }
+
+    function openModal() {
+        document.getElementById('modal').style.display = 'flex'; // Muestra el modal
+    }
+
+    function closeModal() {
+        document.getElementById('modal').style.display = 'none'; // Oculta el modal
+    }
+
+    function registerClient() {
+        const name = document.getElementById('clientName').value;
+        const email = document.getElementById('clientEmail').value;
+        const phone = document.getElementById('clientPhone').value;
+
+        // Aquí puedes agregar lógica para guardar la información, por ejemplo, enviarla a un servidor
+        alert(`Cliente registrado: ${name}\nCorreo: ${email}\nTeléfono: ${phone}`);
+
+        // Limpiar el formulario después de enviar
+        document.getElementById('clientName').value = '';
+        document.getElementById('clientEmail').value = '';
+        document.getElementById('clientPhone').value = '';
+        closeModal(); // Cierra el modal después de registrar
+    }
+</script>
+
+</body>
+</html>
